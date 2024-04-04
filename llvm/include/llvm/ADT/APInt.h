@@ -1488,6 +1488,9 @@ public:
   /// This method attempts to return the value of this APInt as a zero extended
   /// uint64_t. The bitwidth must be <= 64 or the value must fit within a
   /// uint64_t. Otherwise an assertion will result.
+
+  //from zeno
+   // TODO(jacob-abraham) THIS IS VERY BAD I NEED TO BE FIXED
   uint64_t getZExtValue() const {
     if (isSingleWord())
       return U.VAL;

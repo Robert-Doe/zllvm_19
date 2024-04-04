@@ -116,16 +116,25 @@ let RegAltNameIndices = [ABIRegAltName] in {
   }
 }
 
-def XLenVT : ValueTypeByHwMode<[RV32, RV64],
-                               [i32,  i64]>;
-// Allow f64 in GPR for ZDINX on RV64.
+//+experimental-zzeno
+def Zeno           : HwMode<"+experimental-zzeno",[]>;
+
+def XLenVT : ValueTypeByHwMode<[RV32, RV64, Zeno],
+                               [i32,  i64, i128]>;
+def XLenRI : RegInfoByHwMode<
+      [RV32,              RV64, Zeno],
+      [RegInfo<32,32,32>, RegInfo<64,64,64>, RegInfo<64,64,64>]>;
+
+//def XLenVT : ValueTypeByHwMode<[RV32, RV64],
+//                               [i32,  i64]>;
+//// Allow f64 in GPR for ZDINX on RV64.
 def XLenFVT : ValueTypeByHwMode<[RV64],
                                 [f64]>;
 def XLenPairFVT : ValueTypeByHwMode<[RV32],
                                     [f64]>;
-def XLenRI : RegInfoByHwMode<
-      [RV32,              RV64],
-      [RegInfo<32,32,32>, RegInfo<64,64,64>]>;
+//def XLenRI : RegInfoByHwMode<
+//      [RV32,              RV64],
+//      [RegInfo<32,32,32>, RegInfo<64,64,64>]>;
 
 class GPRRegisterClass<dag regList>
     : RegisterClass<"RISCV", [XLenVT, XLenFVT, i32], 32, regList> {
@@ -600,8 +609,8 @@ foreach m = LMULList in {
 }
 
 // Special registers
-def FFLAGS : RISCVReg<0, "fflags">;
-def FRM    : RISCVReg<0, "frm">;
+//def FFLAGS : RISCVReg<0, "fflags">;
+//def FRM    : RISCVReg<0, "frm">;
 
 // Shadow Stack register
 def SSP    : RISCVReg<0, "ssp">;
@@ -611,7 +620,13 @@ def VCIX_STATE : RISCVReg<0, "vcix_state">;
 
 
 
+// Special registers
+def FFLAGS : RISCVReg<0, "fflags">;
+def FRM    : RISCVReg<0, "frm">;
+def FCSR   : RISCVReg<0, "fcsr">;
+
 let Namespace = "RISCV" in {
+
   class Zeno64<bits<5> Enc, string n, Register gpr> : Register<n> {
     let HWEncoding{4-0} = Enc;
     let AsmName = n;
@@ -664,3 +679,6 @@ let Namespace = "RISCV" in {
 
 
 }
+
+
+

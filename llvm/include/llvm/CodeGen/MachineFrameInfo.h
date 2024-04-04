@@ -20,6 +20,12 @@
 #include <cassert>
 #include <vector>
 
+//from zeno
+#include "llvm/Support/Debug.h"
+#include "llvm/Support/raw_ostream.h"
+#include "llvm/Support/PrettyStackTrace.h"
+
+
 namespace llvm {
 class raw_ostream;
 class MachineFunction;
