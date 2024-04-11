@@ -1260,3 +1260,11 @@ def FeatureForcedSWShadowStack : SubtargetFeature<
     "forced-sw-shadow-stack", "HasForcedSWShadowStack", "true",
     "Implement shadow stack with software.">;
 def HasForcedSWShadowStack : Predicate<"Subtarget->hasForcedSWShadowStack()">;
+
+def FeatureStdExtZZeno
+    : SubtargetFeature<"experimental-zzeno", "HasStdExtZZeno", "true",
+                       "'Zeno' (Zeno Arch)">;
+def HasStdExtZZeno : Predicate<"Subtarget->hasStdExtZZeno()">,
+                             AssemblerPredicate<(all_of FeatureStdExtZZeno),
+                             "'Zeno' (Zeno Arch)">;
+def NotHasStdExtZZeno : Predicate<"!Subtarget->hasStdExtZZeno()">;

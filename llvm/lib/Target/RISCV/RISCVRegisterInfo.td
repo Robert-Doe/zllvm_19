@@ -117,7 +117,7 @@ let RegAltNameIndices = [ABIRegAltName] in {
 }
 
 //+experimental-zzeno
-def Zeno           : HwMode<"+experimental-zzeno",[]>;
+def Zeno           : HwMode<"+experimental-zzeno",[HasStdExtZZeno]>;
 
 def XLenVT : ValueTypeByHwMode<[RV32, RV64, Zeno],
                                [i32,  i64, i128]>;

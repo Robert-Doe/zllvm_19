@@ -391,11 +391,25 @@ def uimm6gt32 : ImmLeaf<XLenVT, [{
   return isUInt<6>(Imm) && Imm > 32;
 }]>;
 
+
+
+
+
+
+
 // Addressing modes.
 // Necessary because a frameindex can't be matched directly in a pattern.
 def FrameAddrRegImm : ComplexPattern<iPTR, 2, "SelectFrameAddrRegImm",
                                      [frameindex, or, add]>;
 def AddrRegImm : ComplexPattern<iPTR, 2, "SelectAddrRegImm">;
+
+//from zeno: Especially LLVM 13
+// Addressing modes.
+// Necessary because a frameindex can't be matched directly in a pattern.
+def AddrFI : ComplexPattern<iPTR, 1, "SelectAddrFI", [frameindex], []>;
+def BaseAddr : ComplexPattern<iPTR, 1, "SelectBaseAddr">;
+
+
 
 // Return the negation of an immediate value.
 def NegImm : SDNodeXForm<imm, [{
@@ -1183,6 +1197,10 @@ class PatGprUimmLog2XLen<SDPatternOperator OpNode, RVInstIShift Inst>
     : PatGprImm<OpNode, Inst, uimmlog2xlen>;
 
 /// Predicates
+
+def IsOrAdd: PatFrag<(ops node:$A, node:$B), (or node:$A, node:$B), [{
+  return isOrEquivalentToAdd(N);
+}]>;
 
 def assertsexti32 : PatFrag<(ops node:$src), (assertsext node:$src), [{
   return cast<VTSDNode>(N->getOperand(1))->getVT().bitsLE(MVT::i32);
